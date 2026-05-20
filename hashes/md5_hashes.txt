@@ -1,0 +1,19 @@
+# Password Hash Challenge — MD5
+# Generated: 2026-05-20
+#
+# Format: id : difficulty : hash
+#
+# Task: find the original plaintext password for each hash.
+# Use your dictionary attack first, then your hybrid attack.
+# Record each password you crack in results/phase3.csv.
+#
+
+h01 : easy   : 5f4dcc3b5aa765d61d8327deb882cf99
+h02 : easy   : e10adc3949ba59abbe56e057f20f883e
+h03 : easy   : f25a2fc72690b780b2a14e140ef6a9e0
+h04 : easy   : 0571749e2ac330a7455809c6b0e7af90
+h05 : medium : 2ac9cb7dc02b3c0083eb70898e549b63
+h06 : medium : b696aef7776367787253dc2acdd10279
+h07 : medium : 433911fb28f3bd3a22915df7623f8520
+h08 : hard   : 925643d1a8e2d8f26e30f60ae57142d2
+h09 : hard   : a654a5eddae49ba758bee7c03b6dca79

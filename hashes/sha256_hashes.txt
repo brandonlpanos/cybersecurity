@@ -1,0 +1,19 @@
+# Password Hash Challenge — SHA256
+# Generated: 2026-05-20
+#
+# Format: id : difficulty : hash
+#
+# Task: find the original plaintext password for each hash.
+# Use your dictionary attack first, then your hybrid attack.
+# Record each password you crack in results/phase3.csv.
+#
+
+h01 : easy   : 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+h02 : easy   : 8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
+h03 : easy   : e4ad93ca07acb8d908a3aa41e920ea4f4ef4f26e7f86cf8291c5db289780a5ae
+h04 : easy   : a941a4c4fd0c01cddef61b8be963bf4c1e2b0811c037ce3f1835fddf6ef6c223
+h05 : medium : 19513fdc9da4fb72a4a05eb66917548d3c90ff94d5419e1f2363eea89dfee1dd
+h06 : medium : 58fc584e9905eaabe46cfe91a47debfa524356bb7d0ef6476d5a94048dd90885
+h07 : medium : 76f60c3fc2fe0745c6b8717c32a88538ec4ae153856d9d2b571394e0cfcb0117
+h08 : hard   : 175de06913a0a5e4c24fd8311d84ccc1a21690f64f1ad5f01f5d2d8a096b6550
+h09 : hard   : d5bfc2a1f0626a0a2397d057ca5b4a7743b1adc3e8db57d3b6f1b4d77715e70e

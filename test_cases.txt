@@ -1,0 +1,254 @@
+# =============================================================================
+# test_cases.txt  —  FHNW Password Cracking Challenge
+# =============================================================================
+#
+# Use this file to verify your code produces correct results BEFORE running
+# experiments on the real challenge files. If your output matches what is
+# written here, your implementation is correct.
+#
+# Work through this file top to bottom as you build each phase.
+# =============================================================================
+
+
+# =============================================================================
+# SECTION 1 — MD5 Hashes
+# =============================================================================
+#
+# Phase 3 introduces hash cracking. Use these pairs to check that your
+# md5_hash() function (or hashlib.md5 directly) returns the right result.
+#
+# How to verify in Python:
+#
+#   import hashlib
+#   hashlib.md5("test".encode()).hexdigest()
+#   # should return: 098f6bcd4621d373cade4e832627b4f6
+#
+# Important: always call .encode() before hashing. Passing a plain string
+# raises a TypeError in Python 3.
+#
+# Format: password  →  md5_hash
+# -----------------------------------------------------------------------------
+
+test          →  098f6bcd4621d373cade4e832627b4f6
+hello         →  5d41402abc4b2a76b9719d911017c592
+abc           →  900150983cd24fb0d6963f7d28e17f72
+password      →  5f4dcc3b5aa765d61d8327deb882cf99
+123456        →  e10adc3949ba59abbe56e057f20f883e
+sunshine      →  0571749e2ac330a7455809c6b0e7af90
+dragon        →  8621ffdbc5698829397d97767ac13db3
+Password1     →  2ac9cb7dc02b3c0083eb70898e549b63
+p@ssw0rd      →  0f359740bd1cda994f8b55330c86d845
+Sunshine123!  →  fcad104321daef95ec90d75d5b89c51e
+
+# Quick self-test — paste this into a Python shell and all lines should
+# print True:
+#
+#   import hashlib
+#   def md5(p): return hashlib.md5(p.encode()).hexdigest()
+#
+#   print(md5("test")         == "098f6bcd4621d373cade4e832627b4f6")
+#   print(md5("password")     == "5f4dcc3b5aa765d61d8327deb882cf99")
+#   print(md5("123456")       == "e10adc3949ba59abbe56e057f20f883e")
+#   print(md5("Password1")    == "2ac9cb7dc02b3c0083eb70898e549b63")
+#   print(md5("p@ssw0rd")     == "0f359740bd1cda994f8b55330c86d845")
+#   print(md5("Sunshine123!") == "fcad104321daef95ec90d75d5b89c51e")
+
+
+# =============================================================================
+# SECTION 2 — SHA-256 Hashes
+# =============================================================================
+#
+# Same idea as Section 1, but for SHA-256.
+#
+# How to verify in Python:
+#
+#   import hashlib
+#   hashlib.sha256("test".encode()).hexdigest()
+#   # should return: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+#
+# Format: password  →  sha256_hash
+# -----------------------------------------------------------------------------
+
+test          →  9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+hello         →  2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+abc           →  ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+password      →  5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+123456        →  8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
+sunshine      →  a941a4c4fd0c01cddef61b8be963bf4c1e2b0811c037ce3f1835fddf6ef6c223
+dragon        →  a9c43be948c5cabd56ef2bacffb77cdaa5eec49dd5eb0cc4129cf3eda5f0e74c
+Password1     →  19513fdc9da4fb72a4a05eb66917548d3c90ff94d5419e1f2363eea89dfee1dd
+p@ssw0rd      →  a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95
+Sunshine123!  →  d0e3b04266231ceb67eb2620266553c7971733cb7ff83538631fad4cd18c0116
+
+# Quick self-test:
+#
+#   import hashlib
+#   def sha256(p): return hashlib.sha256(p.encode()).hexdigest()
+#
+#   print(sha256("test")     == "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08")
+#   print(sha256("password") == "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")
+#   print(sha256("123456")   == "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92")
+
+
+# =============================================================================
+# SECTION 3 — bcrypt
+# =============================================================================
+#
+# bcrypt works differently from MD5 and SHA-256 in two important ways:
+#
+#   1. It is non-deterministic: the same password hashed twice produces two
+#      different hashes. You can NEVER re-generate the stored hash — you can
+#      only check whether a candidate matches it.
+#
+#   2. It has a cost factor (the number after $2b$). Higher cost = more
+#      computation per check. rounds=12 is the production standard;
+#      rounds=4 is fast enough for testing.
+#
+# Install bcrypt first:  pip install bcrypt
+#
+# How to verify in Python:
+#
+#   import bcrypt
+#   stored_hash = b"$2b$04$0/TlUcBmJUrSOZZJRNjhEOO/x56sM.IzATPxeHsqEv8DnRrD2tx5i"
+#   bcrypt.checkpw(b"hello", stored_hash)
+#   # should return: True
+#
+#   bcrypt.checkpw(b"wrong", stored_hash)
+#   # should return: False
+#
+# Note: pass bytes (b"hello"), not a string ("hello"), to checkpw.
+#
+# Format: password  →  bcrypt_hash  [cost rounds]
+# -----------------------------------------------------------------------------
+
+hello     →  $2b$04$0/TlUcBmJUrSOZZJRNjhEOO/x56sM.IzATPxeHsqEv8DnRrD2tx5i   [rounds=4,  fast]
+password  →  $2b$12$uY7GQ5uojk9PmgSaJkoYVOCuUzDjV1aCkvr/fEu5LuXjV6YVCGfCm   [rounds=12, slow]
+
+# Timing experiment: run this and compare the two times.
+# The difference is the entire security model of bcrypt.
+#
+#   import bcrypt, time
+#
+#   fast_hash = b"$2b$04$0/TlUcBmJUrSOZZJRNjhEOO/x56sM.IzATPxeHsqEv8DnRrD2tx5i"
+#   slow_hash = b"$2b$12$uY7GQ5uojk9PmgSaJkoYVOCuUzDjV1aCkvr/fEu5LuXjV6YVCGfCm"
+#
+#   t = time.time()
+#   bcrypt.checkpw(b"password", fast_hash)
+#   print(f"rounds=4 : {time.time() - t:.4f}s")
+#
+#   t = time.time()
+#   bcrypt.checkpw(b"password", slow_hash)
+#   print(f"rounds=12: {time.time() - t:.4f}s")
+#
+# If you can only check ~10 passwords per second (rounds=12), and an attacker
+# wants to try rockyou.txt (1.4 million entries), how long does that take?
+# Compare that with MD5, where you can check millions per second.
+
+
+# =============================================================================
+# SECTION 4 — ZIP file test
+# =============================================================================
+#
+# Use test_data/test.zip to verify your try_password() function works
+# before you run it against the real challenge ZIPs.
+#
+# Password: hello
+#
+# Expected behaviour:
+#   try_password("test_data/test.zip", "hello")   → True
+#   try_password("test_data/test.zip", "wrong")   → False
+#   try_password("test_data/test.zip", "Hello")   → False  (case-sensitive)
+#   try_password("test_data/test.zip", "hell0")   → False  (0 ≠ o)
+#   try_password("test_data/test.zip", "")        → False
+#
+# Minimal try_password implementation to verify against:
+#
+#   import zipfile
+#
+#   def try_password(zip_path, password):
+#       try:
+#           with zipfile.ZipFile(zip_path) as zf:
+#               zf.extractall(pwd=password.encode())
+#           return True
+#       except Exception:
+#           return False
+
+
+# =============================================================================
+# SECTION 5 — Character set reference
+# =============================================================================
+#
+# Use these numbers when calculating search spaces and estimating crack times.
+#
+# Character set              Size   Characters
+# ─────────────────────────────────────────────────────────────────────────────
+# Digits only                  10   0123456789
+# Lowercase only               26   abcdefghijklmnopqrstuvwxyz
+# Uppercase only               26   ABCDEFGHIJKLMNOPQRSTUVWXYZ
+# Digits + lowercase           36   0-9, a-z
+# Digits + lower + upper       62   0-9, a-z, A-Z
+# Full printable ASCII         95   all printable characters (space to ~)
+#
+# Search space formula:  charset_size ^ password_length
+#
+# Examples:
+#   4-digit PIN         : 10^4  =              10,000
+#   5-digit PIN         : 10^5  =             100,000
+#   6-digit PIN         : 10^6  =           1,000,000
+#   4 lowercase letters : 26^4  =             456,976
+#   5 lowercase letters : 26^5  =          11,881,376
+#   6 lowercase letters : 26^6  =         308,915,776
+#   8 lowercase letters : 26^8  =     208,827,064,576
+#   8 chars, full set   : 95^8  =   6,634,204,312,890,625
+#
+# Python speed reference (approximate, varies by machine):
+#   Your brute forcer will run at roughly 500–2,000 ZIP attempts per second.
+#   At 1,000 attempts/second:
+#     10,000 attempts  →  ~10 seconds
+#     100,000 attempts →  ~100 seconds (1.7 minutes)
+#     1,000,000 attempts → ~1,000 seconds (17 minutes)
+#     11,000,000 attempts → ~3 hours
+#
+#   This is intentionally slow. It makes the difference between attack
+#   strategies visible in your timing data. A GPU-based tool like Hashcat
+#   runs billions of attempts per second — but you are not allowed to use it.
+
+
+# =============================================================================
+# SECTION 6 — Hybrid attack rule reference
+# =============================================================================
+#
+# These are the transformations your hybrid attack must implement.
+# Use the examples to verify each rule produces the right output.
+#
+# Rule                  Input        Output(s)
+# ─────────────────────────────────────────────────────────────────────────────
+# Capitalise first      password  →  Password
+#                       sunshine  →  Sunshine
+#
+# Append digits 0-99    password  →  password0, password1, ..., password99
+#                       dragon    →  dragon0,   dragon1,   ..., dragon99
+#
+# L33t substitutions    Apply ALL substitutions in the table simultaneously.
+#   (all at once)       dragon    →  dr@g0n     (a→@ and o→0)
+#                       monkey    →  m0nk3y     (o→0 and e→3)
+#                       password  →  p@$$w0rd   (a→@, s→$, s→$, o→0)
+#                       welcome   →  w3lc0m3    (e→3, o→0, e→3)
+#
+#   Full substitution table:
+#     a → @
+#     e → 3
+#     i → 1
+#     o → 0
+#     s → $
+#     t → +
+#
+# Common suffixes       password  →  password!
+#                       password  →  password123
+#                       password  →  password2024
+#                       password  →  password#1
+#
+# Phase 4 requires combining rules (all applied together):
+#   Capitalise + leet + digit:   dragon   →  Dr@g0n99
+#   Capitalise + leet + year:    monkey   →  M0nk3y2024
+#   Capitalise + leet + symbol:  welcome  →  W3lc0m3!
